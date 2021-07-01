@@ -53,17 +53,19 @@ section.nav_section nav ul.nav_menu {
 @media (max-width: 768px) {
   section.nav_section nav ul.nav_menu {
     display: block !important;
-    background: #06142b;
+    background: #12122d;
     position: fixed;
     left: -100%;
     top: 0;
     height: 100%;
     max-width: 350px;
     width: 100%;
-    padding: 20px;
-    padding-top: 80px;
+    padding: 80px 20px;
+    overflow-y: auto !important;
     -webkit-transition: .4s;
     transition: .4s;
+    -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
   }
   section.nav_section nav ul.nav_menu.active_menu {
     left: 0;
@@ -115,6 +117,7 @@ section.nav_section nav .toggle {
           align-items: center;
   position: relative;
   cursor: pointer;
+  z-index: 100;
 }
 
 @media (max-width: 768px) {
@@ -129,11 +132,11 @@ section.nav_section nav .toggle:before {
   content: "";
   width: 30px;
   height: 3px;
-  background: black;
+  background: var(--text-color);
   -webkit-transform: translateY(-10px);
           transform: translateY(-10px);
-  -webkit-box-shadow: 0 10px 0 black;
-          box-shadow: 0 10px 0 black;
+  -webkit-box-shadow: 0 10px 0 var(--text-color);
+          box-shadow: 0 10px 0 var(--text-color);
   position: absolute;
   -webkit-transition: 0.4s;
   transition: 0.4s;
@@ -151,7 +154,7 @@ section.nav_section nav .toggle:after {
   content: "";
   width: 30px;
   height: 3px;
-  background: black;
+  background: var(--text-color);
   -webkit-transform: translateY(10px);
           transform: translateY(10px);
   position: absolute;
@@ -222,19 +225,19 @@ section.nav_section .theme-change ion-icon {
   line-height: 20px;
 }
 
-section.nav_section .active {
+section.nav_section .active_theme {
   background: yellow;
 }
 
-section.nav_section .active .moon ion-icon {
+section.nav_section .active_theme .moon ion-icon {
   display: none !important;
 }
 
-section.nav_section .active .sun {
+section.nav_section .active_theme .sun {
   display: block !important;
 }
 
-section.nav_section .active .sun ion-icon {
+section.nav_section .active_theme .sun ion-icon {
   color: black;
 }
 /*# sourceMappingURL=Navbar.css.map */

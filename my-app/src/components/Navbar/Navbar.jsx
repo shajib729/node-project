@@ -1,13 +1,24 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import './Navbar.css'
 
+const getLocalStorage = () => {
+    let theme = localStorage.getItem("setTheme")
+    if (theme) {
+        return theme;
+    } else {
+        return false;
+    }
+}
 function Navbar() {
     const [toggle, setToggle] = useState(false);
-    const [dark, setDark] = useState(false);
+    const [dark, setDark] = useState(getLocalStorage());
 
     dark ? document.body.classList.add("dark") : document.body.classList.remove("dark")
     
+    useEffect(() => {
+        localStorage.setItem("setTheme",dark)
+    },[dark])
     return (
         <section className="nav_section">
             <nav className="container">
@@ -48,7 +59,7 @@ function Navbar() {
                 <div className={toggle?"active toggle cngClr":"toggle"} onClick={()=>setToggle(!toggle)}></div>
             </nav>
 
-            <div className={dark ? "theme-change active" : "theme-change"} onClick={()=>setDark(!dark)}>
+            <div className={dark ? "theme-change active_theme" : "theme-change"} onClick={()=>setDark(!dark)}>
                 <div className="moon">
                     <ion-icon name="moon"></ion-icon>
                 </div>

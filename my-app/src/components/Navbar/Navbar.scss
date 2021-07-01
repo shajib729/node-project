@@ -35,16 +35,17 @@ section.nav_section{
 
             @media (max-width:768px) {
                 display: block !important;
-                background: rgb(6, 20, 43);
+                background: #12122d;
                 position: fixed;
                 left: -100%;
                 top: 0;
                 height: 100%;
                 max-width: 350px;
                 width: 100%;
-                padding: 20px;
-                padding-top: 80px;
+                padding: 80px 20px;
+                overflow-y: auto !important;
                 transition: .4s;
+                box-shadow: 0 5px 10px rgba(0,0,0,0.8);
 
                 &.active_menu{
                     left: 0;
@@ -90,7 +91,7 @@ section.nav_section{
             align-items: center;
             position: relative;
             cursor: pointer;
-            // background:black;
+            z-index: 100;
 
             @media (max-width:768px) {
                 display: flex !important;
@@ -100,9 +101,9 @@ section.nav_section{
             content: "";
             width: 30px;
             height: 3px;
-            background: black;
+            background: var(--text-color);
             transform: translateY(-10px);
-            box-shadow: 0 10px 0 black;
+            box-shadow: 0 10px 0  var(--text-color);
             position: absolute;
             transition: 0.4s;
 
@@ -117,7 +118,7 @@ section.nav_section{
             content: "";
             width: 30px;
             height: 3px;
-            background: black;
+            background:  var(--text-color);
             transform: translateY(10px);
             position: absolute;
             transition: 0.4s;
@@ -171,7 +172,7 @@ section.nav_section{
             line-height: 20px;
         }
     }
-    .active{
+    .active_theme{
         background: yellow;
         
         .moon ion-icon {
