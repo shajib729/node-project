@@ -28,6 +28,7 @@ app.get("/", (req,res) => {
 app.get("/about",middleware,(req,res) => {
     try {
         console.log("About");
+        // res.cookie("Test","shajib")
         res.send("Hello world from About page")
 
     } catch (err) {

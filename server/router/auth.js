@@ -1,3 +1,4 @@
+const jwt = require("jsonwebtoken")
 const express = require("express")
 const router = express.Router()
 const bcrypt = require("bcrypt")
@@ -113,7 +114,20 @@ router.post("/signin", (req, res) => {
     
     if (email && password) {
         User.findOne({ email: email })
-        .then((s) => {
+            .then((s) => {
+            
+            // generate jwt 
+            s.generateAuthToken()
+            .then((token) => {
+                res.cookie("jwtoken", token, {
+                    expires: new Date(Date.now() + 25892000000),
+                    httpOnly:true
+                })
+            }).catch((err) => {
+                res.send("Failed to create token")
+                console.log(`Error while creating jwt --`);
+            })
+
             bcrypt.compare(password, s.password)
             .then((hPassword) => { 
                 console.log(hPassword);
