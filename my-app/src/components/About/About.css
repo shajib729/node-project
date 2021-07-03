@@ -1,0 +1,54 @@
+section.about_section {
+  margin: 30px 0;
+}
+
+section.about_section form {
+  -webkit-box-shadow: 5px 5px 15px var(--form-box-shadow), 2px 2px 10px var(--form-box-shadow);
+          box-shadow: 5px 5px 15px var(--form-box-shadow), 2px 2px 10px var(--form-box-shadow);
+  border-radius: 10px;
+  padding: 20px;
+  margin: auto;
+  max-width: 800px;
+}
+
+section.about_section form p {
+  color: var(--text-color);
+}
+
+section.about_section form .profile {
+  overflow: hidden !important;
+  width: 200px;
+  height: 200px;
+  padding: 0;
+  margin: auto;
+  border-radius: 50%;
+}
+
+section.about_section form .profile img {
+  max-width: 100%;
+  -o-object-fit: cover !important;
+     object-fit: cover !important;
+}
+
+section.about_section form .profile-head h5, section.about_section form .profile-head h6, section.about_section form .profile-head p {
+  color: var(--text-color);
+}
+
+section.about_section form .about-bottom .about-url h5 {
+  color: var(--text-color);
+}
+
+section.about_section form .about-bottom .about-url a {
+  text-decoration: none;
+  color: var(--text-color);
+}
+
+section.about_section form .about-bottom .about-info label {
+  width: 150px;
+  color: var(--text-color);
+}
+
+section.about_section form .about-bottom .about-info p {
+  color: var(--text-color);
+}
+/*# sourceMappingURL=About.css.map */

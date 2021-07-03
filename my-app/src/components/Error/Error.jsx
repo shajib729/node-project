@@ -1,10 +1,19 @@
 import React from 'react'
+import { NavLink } from 'react-router-dom'
+import './Error.css'
 
 function Error() {
     return (
-        <div>
-            <h1>This is Error Page</h1>
-        </div>
+        <section className="error_section">
+            <div className="container">
+                <span className="404">404</span>
+                <h1 className="title">
+                    We are sorry, page not found!
+                </h1>
+                <p>The page you are looking for might doesn't exist</p>
+                <NavLink to="/">Back To Home</NavLink>
+            </div>
+        </section>
     )
 }
 

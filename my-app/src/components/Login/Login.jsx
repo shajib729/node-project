@@ -1,8 +1,42 @@
-import React from 'react'
-import { NavLink } from 'react-router-dom'
+import React, { useState } from 'react'
+import { NavLink, useHistory } from 'react-router-dom'
 import "./Login.css"
 
 function Login() {
+    const history = useHistory();
+    const [userMatch, setUserMatch] = useState({ email: "", password: "" })
+    
+    const handleChange = (e) => {
+
+        let name= e.target.name;
+        let value = e.target.value;
+        setUserMatch({...userMatch,[name]:value})
+    }
+
+    const onSubmit = async (e) => {
+        e.preventDefault();
+        const { email, password } = userMatch;
+        
+        const res = await fetch("/signin", {
+            method: "POST",
+            headers: {
+                "Content-Type":"application/json"
+            },
+            body: JSON.stringify({
+                email,password
+            })
+        })
+        const data = await res.json();
+        // console.log(res);
+        // console.log(data);
+        if (res.status===422 || !data) {
+            alert(data.error)
+        } else {
+            alert(data.message)
+            history.push("/")
+        }
+    }
+
     return (
         <section className="login_section">
             <div className="container">
@@ -17,11 +51,11 @@ function Login() {
                     </div>
 
                     <div className="col-md-6 m-0 p-0">
-                        <form action="#">
+                        <form method="POST" onSubmit={onSubmit}>
                             <h1>Sign in</h1>
                             
-                            <input type="email" name="email" placeholder="Email"  autoComplete="off"/>
-                            <input type="password" name="password" placeholder="Password" autoComplete="off"/>
+                            <input type="email" value={setUserMatch.email} onChange={handleChange} name="email" placeholder="Email"  autoComplete="off"/>
+                            <input type="password" value={setUserMatch.password} onChange={handleChange} name="password" placeholder="Password" autoComplete="off"/>
                             <button type="submit">Sign In</button>
 
                             <div className="for_mobile">

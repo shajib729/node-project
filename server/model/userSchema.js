@@ -25,9 +25,21 @@ const userSchema = new mongoose.Schema({
         required: true,
         unique:true
     },
-    tokens: [
+    date: {
+        type: Date,
+        default: Date.now
+    },
+    messages: [
         {
-            token: {
+            name: {
+                type: String,
+                required: true
+            },
+            email: {
+                type: String,
+                required: true
+            },
+            message: {
                 type: String,
                 required: true
             }
@@ -35,13 +47,12 @@ const userSchema = new mongoose.Schema({
     ]
 })
 
-// we are generating token
-userSchema.methods.generateAuthToken = async function () {
+// stored the message
+userSchema.method.addMessage = async function (name, email, message) {
     try {
-        let token = jwt.sign({ _id: this._id }, process.env.SECRET_KEY);
-        this.tokens = this.tokens.concat({ token: token })
-        await this.save()
-        return token;
+        this.messages=this.messages.concat({name, email, message})
+        await this.save();
+        return this.messages;
     } catch (err) {
         console.log(err);
     }
