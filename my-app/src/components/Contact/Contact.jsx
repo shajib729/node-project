@@ -2,6 +2,9 @@ import React, {useState,useEffect} from 'react'
 import './Contact.css'
 import { useHistory } from "react-router-dom"
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 function Contact() {
     const [userData,setUserData]=useState([]);
     const [contactData, setContactData] = useState({ name:'', email:'', message: "" });
@@ -27,8 +30,10 @@ function Contact() {
             }
             
         } catch (err) {
-            console.log("Error found");
-            // history.push('/login')
+            toast.error("You need to login first");
+            setTimeout(() => {
+            history.push('/login')                
+            },3000)
         }
     }
 
@@ -44,35 +49,52 @@ function Contact() {
     }
 
     const handleSubmit = async (e) => {
-        e.preventDefault();        
-        // const { name, email, message } = contactData;
+        if (userContact===[]) {
+            history.push('/login')
+        }
+        e.preventDefault();
+        const { name, email, message } = contactData;
 
         const res = await fetch("/contact", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(
-                contactData
-            )
+            body: JSON.stringify({
+                name, email, message
+            })
         });
 
         const data = await res.json();
         console.log(res);
         console.log(data);
-        if (!data) {
-            console.log("Meassage not sent")
-        } else {
-            alert("Message has been sent successfully...");
-            // setContactData({ ...contactData, message: "" })
+        if (res.status===422) {
+            toast.error(data.error)
+        }else {
+            toast.success("Message has been sent successfully...");
             console.log("Successfully sent");
+            
+            setContactData({ ...contactData, message: "" })
         }
+
+        
 
     }
 
 
     return (
         <section className="contact_section">
+            <ToastContainer
+            position="top-center"
+            autoClose={3000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            />
             <div className="container">
                 <div className="row">
                     <div className="col-lg-4 col-md-6">
@@ -114,7 +136,7 @@ function Contact() {
                     <h1 className="form-title">
                         Get In Touch
                     </h1>
-                    <form method="POST" onsubmit={handleSubmit}>
+                    <form method="POST" onSubmit={handleSubmit}>
                         <input type="text" className="form-control" name="name" value={contactData.name} onChange={handleChange}  placeholder="Enter Your Name"/>
                         <input type="email" className="form-control" name="email" value={contactData.email} onChange={handleChange}  placeholder="Enter Your Email"/>
                         <textarea name="message" className="form-control" name="message" value={contactData.message} onChange={handleChange} placeholder="Meassage"></textarea>

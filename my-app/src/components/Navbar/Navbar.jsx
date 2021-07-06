@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { NavLink } from 'react-router-dom'
 import './Navbar.css'
+
+import {UserContext} from '../../App'
 
 const getLocalData = () => {
     let list = localStorage.getItem("theme")
@@ -11,9 +13,80 @@ const getLocalData = () => {
     }
 }
 
+
 function Navbar() {
     
+    const {state, dispatch} = useContext(UserContext)
 
+    
+const RenderMenu = () => {
+    if (state) {
+        return (
+            <>
+                <li>
+                <NavLink exact to="/" activeClassName="active_link" onClick={()=>setToggle(false)}>
+                    Home
+                </NavLink>
+                </li>
+                
+                <li>
+                <NavLink to="/about" activeClassName="active_link" onClick={()=>setToggle(false)}>
+                    About
+                </NavLink>
+                </li>
+
+                <li>
+                <NavLink to="/contact" activeClassName="active_link" onClick={()=>setToggle(false)}>
+                    Contact
+                </NavLink>
+                </li>
+
+                <li>
+                <NavLink to="/logout" activeClassName="active_link" onClick={()=>setToggle(false)}>
+                    Logout
+                </NavLink>
+                </li>
+
+            </>
+        )
+    }else {
+        return (
+            <>
+                <li>
+                <NavLink exact to="/" activeClassName="active_link" onClick={()=>setToggle(false)}>
+                    Home
+                </NavLink>
+                </li>
+                
+                <li>
+                <NavLink to="/about" activeClassName="active_link" onClick={()=>setToggle(false)}>
+                    About
+                </NavLink>
+                </li>
+
+                <li>
+                <NavLink to="/contact" activeClassName="active_link" onClick={()=>setToggle(false)}>
+                    Contact
+                </NavLink>
+                </li>
+                
+                <li>
+                <NavLink to="/signup" activeClassName="active_link" onClick={()=>setToggle(false)}>
+                    Sign Up
+                </NavLink>
+                </li>
+                
+                <li>
+                <NavLink to="/login" activeClassName="active_link" onClick={()=>setToggle(false)}>
+                    Login
+                </NavLink>
+                </li>
+            </>
+        )
+    }
+}
+
+    
     const [toggle, setToggle] = useState(false);
     const [dark, setDark] = useState(getLocalData());
 
@@ -32,35 +105,8 @@ function Navbar() {
             <nav className="container">
                 <h1 className="logo">LOGO</h1>
                 <ul className={toggle?"nav_menu active_menu":"nav_menu"}>
-                    <li>
-                    <NavLink exact to="/" activeClassName="active_link" onClick={()=>setToggle(false)}>
-                        Home
-                    </NavLink>
-                    </li>
-                    
-                    <li>
-                    <NavLink to="/about" activeClassName="active_link" onClick={()=>setToggle(false)}>
-                        About
-                    </NavLink>
-                    </li>
-
-                    <li>
-                    <NavLink to="/contact" activeClassName="active_link" onClick={()=>setToggle(false)}>
-                        Contact
-                    </NavLink>
-                    </li>
-
-                    <li>
-                    <NavLink to="/signup" activeClassName="active_link" onClick={()=>setToggle(false)}>
-                        Sign Up
-                    </NavLink>
-                    </li>
-                    
-                    <li>
-                    <NavLink to="/login" activeClassName="active_link" onClick={()=>setToggle(false)}>
-                        Login
-                    </NavLink>
-                    </li>
+               
+                    <RenderMenu/>
                     
                 </ul>
 

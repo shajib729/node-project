@@ -2,14 +2,26 @@ import React, { useState } from 'react'
 import { NavLink,useHistory } from 'react-router-dom'
 import "./Signup.css"
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 function Signup() {
     const history = useHistory();
     const [user, setUser] = useState({ name: "", email: "", phone: "", work: "", password: "", cpassword: "" })
     
     const handleChange = (e) => {
         let name = e.target.name
-        let value =e.target.value
+        let value = e.target.value
+        if (name === 'phone') {
+            if (Number(value) || value==='0' || value==='+') {
+                setUser({...user,[name]:value})
+            } else {
+                setUser({...user,[name]:''})
+            }
+        } else {
         setUser({...user,[name]:value})
+            
+        }
     }
 
     const postData = async (e) => {
@@ -27,22 +39,36 @@ function Signup() {
         const data = await res.json();
 
         if (res.status === 422 || !data) {
-            window.alert(data.error);
-            console.log("Invalid Resgistraton");
-            console.log(res);
-            console.log(data);
-        }else{
-            window.alert(data.message);
-            console.log("Invalid Resgistraton");
             console.log(res);
             console.log(data);
 
-            history.push("/login")
+            toast.error(data.error);
+            console.log("Invalid Resgistraton");
+        }else{
+            console.log(res);
+            console.log(data);
+
+            toast.success(data.message)
+
+            setTimeout(() =>{
+                history.push("/login")
+            },3000);
         }
     }
 
     return (
         <section className="signup_section">
+            <ToastContainer
+            position="top-center"
+            autoClose={3000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            />
             <div className="container">
                 <div className="row form_container">
                     <div className="col-md-6">

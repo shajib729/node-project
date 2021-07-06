@@ -1,4 +1,4 @@
-const jwt = require("jsonwebtoken")
+// const jwt = require("jsonwebtoken")
 const mongoose = require("mongoose")
 
 const userSchema = new mongoose.Schema({
@@ -12,7 +12,7 @@ const userSchema = new mongoose.Schema({
         unique:true
     },
     phone: {
-        type: Number,
+        type: String,
         required: true,
         unique:true
     },
@@ -22,12 +22,7 @@ const userSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: true,
-        unique:true
-    },
-    date: {
-        type: Date,
-        default: Date.now
+        required: true
     },
     messages: [
         {
@@ -42,13 +37,17 @@ const userSchema = new mongoose.Schema({
             message: {
                 type: String,
                 required: true
+            },
+            date: {
+                type: Date,
+                default: Date.now
             }
         }
     ]
 })
 
 // stored the message
-userSchema.method.addMessage = async function (name, email, message) {
+userSchema.methods.addMessage = async function (name, email, message) {
     try {
         this.messages=this.messages.concat({name, email, message})
         await this.save();

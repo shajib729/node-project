@@ -1,8 +1,16 @@
-import React, { useState } from 'react'
+import React, { useState,useContext } from 'react'
 import { NavLink, useHistory } from 'react-router-dom'
 import "./Login.css"
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+import {UserContext} from '../../App'
+
 function Login() {
+
+    const { state, dispatch } = useContext(UserContext);
+    
     const history = useHistory();
     const [userMatch, setUserMatch] = useState({ email: "", password: "" })
     
@@ -30,15 +38,32 @@ function Login() {
         // console.log(res);
         // console.log(data);
         if (res.status===422 || !data) {
-            alert(data.error)
+            // alert()
+            toast.error(data.error)
         } else {
-            alert(data.message)
-            history.push("/")
+            dispatch({type:'USER',payload:true})
+            toast.success("Login successful")
+            console.log(data.message)
+
+            setTimeout(() =>{
+                history.push("/")
+            },3000);
         }
     }
 
     return (
         <section className="login_section">
+            <ToastContainer
+            position="top-center"
+            autoClose={3000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            />
             <div className="container">
                 <div className="row form_container">
                     

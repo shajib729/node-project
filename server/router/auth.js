@@ -7,9 +7,9 @@ const authenticate = require ("../middleware/Authenticate")
 require("../db/conn")
 const User = require("../model/userSchema")
 
-router.get("/", (req,res) => {
-    res.send("Hello world from Home page Router")
-})
+// router.get("/", (req,res) => {
+//     res.send("Hello world from Home page Router")
+// })
 
 // #### Using promise create user #####
 
@@ -52,7 +52,6 @@ router.post("/register", async (req, res) => {
                 
            if (!userExist && password===cpassword) {
                
-               
                 password=await bcrypt.hash(password,10)
                 console.log(password);
                
@@ -62,7 +61,20 @@ router.post("/register", async (req, res) => {
                 
                 if (userRegister) {
                     res.status(201).json({ message: "User Registration Successfully" })
-                    console.log(userRegister);
+                    // console.log(userRegister);
+
+                    // generate token
+                    let token=jwt.sign({ _id:userRegister._id},process.env.SECRET_KEY)
+                    console.log(`token : ${token}`);
+                    if (token) {
+                        res.cookie("jwtoken", token, {
+                            expires: new Date(Date.now() + 25892000000),
+                            httpOnly: true
+                        })
+                    } else {
+                        res.send("Failed to create token")
+                    }
+            
                 } else {
                     res.status(500).json({error:"Failed to register"})
                 }  
@@ -176,7 +188,7 @@ router.get("/about",authenticate,(req,res) => {
 })
 
 
-// Get data in contact us page 
+// Get data in contact us and home page *****it also can be used for about us page because both data are similar...see up
 router.get("/getData",authenticate,(req,res) => {
         res.status(200).send(req.rootUser)
 })
@@ -186,28 +198,39 @@ router.get("/getData",authenticate,(req,res) => {
 router.post("/contact",authenticate, async (req,res) => {
     try {
         console.log(req.body);
-        console.log("problem in coming req.body");
         const { name, email, message } = req.body;
 
         if (!name || !email || !message) {
             console.log('Plz fill the contact form perfectly');
             return res.status(422).json({ error: "Plz fill the contact form perfectly" })
-        }
-        const userContact = await User.findOne({ _id: rootID });
-        console.log(`UserContact : ${userContact}`);
-        if (userContact) {
-            const userMessage = await userContact.addMessage(name, email, message);
+        } else {
+            console.log(`userID : ${req.userID} and userEmail : ${req.rootUser.email}`);
+            const userInput = await User.findOne({ email: req.rootUser.email })
+            console.log(userInput);
+            if (userInput) {
+                const userMessage = await userInput.addMessage(name, email, message);
+                console.log(userMessage);
+                
+                await userInput.save();
 
-            console.log(userMessage);
-            
-            await userContact.save();
-
-            res.status(201).json({message:"Message has beeen sent"})
-        }
+                res.status(201).json({message:"Message has beeen sent"})
+            }else{
+                res.status(422).json({error:"Message can't be sent"})
+            }
+        }                
         
     } catch (err) {
-        console.log("Error");
+        console.log("Error Catch " + err);
     }
 })
+
+
+// logout page
+router.get("/logout", (req, res) => {
+    console.log("Hello form logout page");
+    res.clearCookie("jwtoken");
+    res.status(200).send("User logged out successfully")
+})
+
 
 module.exports=router
